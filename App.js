@@ -1,8 +1,4 @@
-const express = require('express');
-const app = express();
-
-app.set('view engine', 'ejs');
-
+const app = require('./config/server')
 app.get('/', function(req, res) {
     res.render("home/index")
 });
@@ -15,6 +11,6 @@ app.get('/noticias', function(req, res) {
     res.render("noticias/noticias")
 });
 app.listen(3000, function() {
-    console.log("Server subiu");
+    console.log("Server ON");
 });
 
