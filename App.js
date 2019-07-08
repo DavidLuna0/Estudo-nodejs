@@ -1,15 +1,11 @@
 const app = require('./config/server')
-app.get('/', function(req, res) {
-    res.render("home/index")
-});
 
-app.get('/formulario_inclusao_noticia', function(req, res) {
-    res.render("admin/form_add_noticia")
-});
+const rotaNoticias = require('./app/routes/noticias')(app);
 
-app.get('/noticias', function(req, res) {
-    res.render("noticias/noticias")
-});
+const rotaHome = require('./app/routes/home')(app);
+
+const rotaFormulario = require('./app/routes/formularioInclusaoNoticia')(app);
+
 app.listen(3000, function() {
     console.log("Server ON");
 });
