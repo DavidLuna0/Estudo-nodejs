@@ -1,10 +1,6 @@
-const dbconn = require('../../config/dbconnection');
-
 module.exports = function(app) {
-
-    const connection = dbconn();
-
     app.get('/noticias', function(req, res) {
+        const connection = app.config.dbconnection();
 
         connection.query('select * from noticias', function(error, result) {
             console.log(error);

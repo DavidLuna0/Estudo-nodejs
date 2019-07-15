@@ -1,9 +1,12 @@
 const mysql = require('mysql');
-module.exports = function() {
+const connMysql = function() {
     return mysql.createConnection({
         host: 'localhost',
         user: 'teste',
         password: 'BancoTeste12!@',
         database: 'portal_noticias'
     });
+}
+module.exports = function() {
+    return connMysql;
 }
