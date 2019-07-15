@@ -1,10 +1,16 @@
-module.exports = function(app) {
-    app.get('/formulario_inclusao_noticia', function(req, res) {
+module.exports = function(application) {
+    application.get('/formulario_inclusao_noticia', function(req, res) {
         res.render("admin/form_add_noticia")
     });
 
-    app.post('/noticias/salvar', function(req, res) {
+    application.post('/noticias/salvar', function(req, res) {
         const noticias = req.body;
-        res.send(noticias);
+
+        const connection = application.config.dbconnection();
+        const noticiasModel = application.app.models.noticiasModel;
+
+        noticiasModel.salvarNoticia(noticias, connection, function(error, result){
+            res.redirect("/noticias");
+        })
     });
 };
