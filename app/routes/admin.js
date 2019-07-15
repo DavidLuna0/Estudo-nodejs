@@ -7,9 +7,9 @@ module.exports = function(application) {
         const noticias = req.body;
 
         const connection = application.config.dbconnection();
-        const noticiasModel = application.app.models.noticiasModel;
+        const noticiasModel = new application.app.models.NoticiasDAO(connection);
 
-        noticiasModel.salvarNoticia(noticias, connection, function(error, result){
+        noticiasModel.salvarNoticia(noticias, function(error, result){
             res.redirect("/noticias");
         })
     });
