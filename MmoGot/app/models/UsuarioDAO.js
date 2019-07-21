@@ -17,6 +17,7 @@ UsuarioDAO.prototype.autenticar = function(usuario, req, res) {
             collection.find(usuario).toArray((err, result) => {
                 if(result[0] != undefined ) {
                     req.session.autorizado = true;
+                    
                     req.session.usuario = result[0].usuario;
                     req.session.casa = result[0].casa;
                 }
