@@ -50,6 +50,16 @@ JogoDAO.prototype.acao = function(acao) {
     });
 }
 
+JogoDAO.prototype.getAcoes = function(usuario) {
+    this._connection.open(function (err, mongoclient) {
+        mongoclient.collection("acao", function(err, collection) {
+            collection.find({usuario : usuario}).toArray((err, result) => {
+                console.log(result);
+            })
+        })
+    });
+}
+
 module.exports = function() {
     return JogoDAO;
 }
