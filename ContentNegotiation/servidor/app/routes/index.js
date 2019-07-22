@@ -1,6 +1,7 @@
 module.exports = function(application){
 	application.get('/', function(req, res){
-		res.format({
+		res.render('caf')
+		/* res.format({
 			html: () => {
 				res.send("Bem vindo ao app NODEJS")
 			},
@@ -11,7 +12,7 @@ module.exports = function(application){
 				res.json(retorno);
 			}
 		});
-		res.send('Bem vindo a sua app NodeJS!');
+		res.send('Bem vindo a sua app NodeJS!'); */
 	});
 
 	application.post('/', function(req, res){
