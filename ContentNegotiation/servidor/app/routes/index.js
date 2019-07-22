@@ -13,4 +13,9 @@ module.exports = function(application){
 		});
 		res.send('Bem vindo a sua app NodeJS!');
 	});
+
+	application.post('/', function(req, res){
+		var dados = req.body;
+		res.send(dados);
+	});
 }

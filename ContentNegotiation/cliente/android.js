@@ -4,13 +4,21 @@ var opcoes = {
     hostname: 'localhost',
     port: 8081,
     path: '/',
+    method: 'post',
     headers: {
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        'Content-type': 'application/json'
     }
 }
+var html = 'nome=josé'
+var json = {
+    nome: 'jose'
+}
+var stringJson = JSON.stringify(json);
+
 var bufferResponse = [];
 
-http.get(opcoes, (res) => {
+var req = http.request(opcoes, (res) => {
     res.on('data', (chunk) => {
         bufferResponse.push(chunk);
     })
@@ -24,3 +32,6 @@ http.get(opcoes, (res) => {
 
     })
 })
+
+req.write(stringJson);
+req.end();
