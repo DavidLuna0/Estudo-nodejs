@@ -5,7 +5,7 @@ const objectId = require('mongodb').ObjectId;
 
 const app = express();
 
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 const port = 8081;
@@ -20,51 +20,111 @@ const db = new mongoDb.Db(
 console.log("Servidor HTTP escutando na porta " + port);
 
 app.get("/", (req, res) => {
-    res.send({msg: 'Olá pessoal'})
-})
+    res.send({ msg: 'Olá pessoal' })
+});
 
 app.post("/api", (req, res) => {
     var dados = req.body;
     db.open((err, mongoclient) => {
         mongoclient.collection('postagens', (err, collection) => {
             collection.insert(dados, (err, records) => {
-                if(err) {
-                    res.json({'status': 'erro'});
+                if (err) {
+                    res.json({ 'status': 'erro' });
                 } else {
-                    res.json({'status': 'inclusao realizada com sucesso'});
+                    res.json({ 'status': 'inclusao realizada com sucesso' });
                 }
                 mongoclient.close();
-            })
-        })
-    })
-})
+            });
+        });
+    });
+});
 
 app.get("/api", (req, res) => {
     db.open((err, mongoclient) => {
         mongoclient.collection('postagens', (err, collection) => {
             collection.find().toArray((err, result) => {
-                if(err) {
+                if (err) {
                     res.json(err);
                 } else {
                     res.json(result);
                 }
                 mongoclient.close();
             });
-        })
-    })
+        });
+    });
 });
 
 app.get("/api/:id", (req, res) => {
     db.open((err, mongoclient) => {
         mongoclient.collection('postagens', (err, collection) => {
             collection.find(objectId(req.params.id)).toArray((err, result) => {
-                if(err) {
+                if (err) {
                     res.json(err);
                 } else {
                     res.json(result);
                 }
                 mongoclient.close();
             });
-        })
-    })
-})
+        });
+    });
+});
+
+app.put("/api/:id", (req, res) => {
+    db.open((err, mongoclient) => {
+        mongoclient.collection('postagens', (err, collection) => {
+            collection.update(
+                { _id: objectId(req.params.id) },
+                { $set: { titulo: req.body.titulo } },
+                {},
+                (err, records) => {
+                    if (err) {
+                        res.json(err)
+                    } else {
+                        res.json(records);
+                    }
+                    mongoclient.close();
+                }
+            )
+        });
+    });
+});
+
+app.put("/api/:id", (req, res) => {
+    db.open((err, mongoclient) => {
+        mongoclient.collection('postagens', (err, collection) => {
+            collection.update(
+                { _id: objectId(req.params.id) },
+                { $set: { titulo: req.body.titulo } },
+                {},
+                (err, records) => {
+                    if (err) {
+                        res.json(err)
+                    } else {
+                        res.json(records);
+                    }
+                    mongoclient.close();
+                });
+        });
+    });
+});
+
+app.put("/api/:id", (req, res) => {
+    db.open((err, mongoclient) => {
+        mongoclient.collection('postagens', (err, collection) => {
+            collection.update(
+                { _id: objectId(req.params.id) },
+                { $set: { titulo: req.body.titulo } },
+                {},
+                (err, records) => {
+                    if (err) {
+                        res.json(err)
+                    } else {
+                        res.json(records);
+                    }
+                    mongoclient.close();
+                });
+        });
+    });
+});
+
+
