@@ -17,6 +17,42 @@
 		<script>
 			$(document).ready(function(){
 
+				function carregaPostagens() {
+					var xhr = new XMLHttpRequest();
+					xhr.open("GET", "http://localhost:8081/api");
+					xhr.onload = function() {
+						if(xhr.status === 200) {
+							var data = $.parseJSON(xhr.responseText);
+							for(i = 0; i < data.length; i++) {
+								$('#container_timeline').append(
+									'<div class ="publicacao">' + 
+										'<span class="titulo">' + 
+											data[i].titulo + 
+										'</span>' +
+										'<img src="http://localhost:8081/uploads/' + data[i].url_imagem + '" />' + 
+										'<div class="comentar">' + 
+											'<input type="text" class="form-control input_comentario" id="postagem_' + data[i]._id +'" placeholder="Adicione um comentario..."/>' + 
+											'<button class="btn btn-default btn_postagem" value="'+data[i]._id + '" type="button">Comentar</button>' + 
+										'</div>' +
+									'</div>'
+								);
+							}
+
+							$('.btn_postagem').click(function() {
+								var id = this.value;
+								var id_input_comentario = 'postagem_' + id;
+								var comentario = $('#' + id_input_comentario).val();
+
+								alert(comentario);
+
+							})
+						}
+					}
+					xhr.send();
+				}
+
+				carregaPostagens();
+
 				$('#btn_incluir').click(function(){
 					$('#container_timeline').hide();
 					$('#container_form').show();
@@ -27,6 +63,27 @@
 					$('#container_form').hide();
 					return false;
 				});
+
+				$('#btn-publicar').click(function() {
+					var formData = new FormData();
+					var arquivo = document.getElementById("arquivo").files[0];
+					var titulo = document.getElementById("titulo").value;
+
+					formData.append("arquivo", arquivo);
+					formData.append("titulo", titulo);
+
+					var xhr = new XMLHttpRequest();
+					xhr.onreadystatechange = function() {
+						if(xhr.readyState == 4) {
+							var resposta = xhr.responseText;
+							document.getElementById('mensagem').innerHTML = resposta;
+						}
+					}
+
+					xhr.open("POST", "http://localhost:8081/api");
+					xhr.send(formData);
+					console.log(formData)
+				})
 
 			});
 		</script>
