@@ -108,21 +108,17 @@ app.put("/api/:id", (req, res) => {
     });
 });
 
-app.put("/api/:id", (req, res) => {
+app.delete("/api/:id", (req, res) => {
     db.open((err, mongoclient) => {
         mongoclient.collection('postagens', (err, collection) => {
-            collection.update(
-                { _id: objectId(req.params.id) },
-                { $set: { titulo: req.body.titulo } },
-                {},
-                (err, records) => {
-                    if (err) {
-                        res.json(err)
-                    } else {
-                        res.json(records);
-                    }
-                    mongoclient.close();
-                });
+            collection.remove({ _id : objectId(req.params.id)}, (err, records) => {
+                if (err) {
+                    res.json(err)
+                } else {
+                    res.json(records);
+                }
+                mongoclient.close();
+            })
         });
     });
 });
