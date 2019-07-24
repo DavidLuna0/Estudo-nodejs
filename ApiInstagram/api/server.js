@@ -80,7 +80,7 @@ app.put("/api/:id", (req, res) => {
                     if (err) {
                         res.json(err)
                     } else {
-                        res.json(records);
+                        res.status(200).json(records);
                     }
                     mongoclient.close();
                 }
@@ -113,7 +113,7 @@ app.delete("/api/:id", (req, res) => {
         mongoclient.collection('postagens', (err, collection) => {
             collection.remove({ _id : objectId(req.params.id)}, (err, records) => {
                 if (err) {
-                    res.json(err)
+                    res.status.json(err)
                 } else {
                     res.json(records);
                 }
