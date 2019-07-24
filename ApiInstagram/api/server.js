@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const mongoDb = require('mongodb');
 const multiparty = require('connect-multiparty');
 const objectId = require('mongodb').ObjectId;
+const fs = require('fs');
 
 const app = express();
 
@@ -27,20 +28,37 @@ app.get("/", (req, res) => {
 
 app.post("/api", (req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
-    var dados = req.body;
-    res.send(dados);
-    db.open((err, mongoclient) => {
-        mongoclient.collection('postagens', (err, collection) => {
-            collection.insert(dados, (err, records) => {
-                if (err) {
-                    res.json({ 'status': 'erro' });
-                } else {
-                    res.json({ 'status': 'inclusao realizada com sucesso' });
-                }
-                mongoclient.close();
+    const date = new Date();
+    const time_stamp = date.getTime();
+    const urlImagem = time_stamp + ' ' + req.files.arquivo.originalFilename;
+
+    const pathOrigem = req.files.arquivo.path;
+    const pathDestino = "./uploads/" + urlImagem;
+
+
+    fs.rename(pathOrigem, pathDestino, (err) => {
+        if(err) {
+            res.status(500).json({error : err});
+            return;
+        }
+
+        var dados = {
+            url_imagem: urlImagem,
+            titulo: req.body.titulo
+        }
+        db.open((err, mongoclient) => {
+            mongoclient.collection('postagens', (err, collection) => {
+                collection.insert(dados, (err, records) => {
+                    if (err) {
+                        res.json({ 'status': 'erro' });
+                    } else {
+                        res.json({ 'status': 'inclusao realizada com sucesso' });
+                    }
+                    mongoclient.close();
+                });
             });
         });
-    });
+    })
 });
 
 app.get("/api", (req, res) => {
