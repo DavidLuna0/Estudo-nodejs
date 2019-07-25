@@ -11,10 +11,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(multiparty());
 app.use(function(req, res, next) {
-    res.setHeader("Acces-Controle-Allow-Origin", "*");
-    res.setHeader("Acces-Controle-Allow-Method", "GET, POST, PUT, DELETE");
-    res.setHeader("Acces-Controle-Allow-Headers", "content-type");
-    res.setHeader("Acces-Controle-Allow-Credentials", true);
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+    res.setHeader("Access-Control-Allow-Headers", "content-type");
+    res.setHeader("Access-Control-Allow-Credentials", true);
     next();
 })
 
@@ -34,7 +34,6 @@ app.get("/", (req, res) => {
 });
 
 app.post("/api", (req, res) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
     const date = new Date();
     const time_stamp = date.getTime();
     const urlImagem = time_stamp + ' ' + req.files.arquivo.originalFilename;
@@ -69,7 +68,6 @@ app.post("/api", (req, res) => {
 });
 
 app.get("/api", (req, res) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
     db.open((err, mongoclient) => {
         mongoclient.collection('postagens', (err, collection) => {
             collection.find().toArray((err, result) => {
@@ -114,7 +112,7 @@ app.get("/api/:id", (req, res) => {
 });
 
 app.put("/api/:id", (req, res) => {
-    res.send("ROta para atualização")
+    res.send(req.body.comentario);
     /* db.open((err, mongoclient) => {
         mongoclient.collection('postagens', (err, collection) => {
             collection.update(

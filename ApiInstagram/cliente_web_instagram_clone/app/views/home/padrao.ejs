@@ -45,11 +45,11 @@
 
 								var xhr = new XMLHttpRequest();
 								xhr.open('PUT', 'http://localhost:8081/api/' + id);
-								xhr.setRequestHeader('Content-type', 'application.json');
+								xhr.setRequestHeader('Content-Type', 'application/json');
 								xhr.onload = function() {
 									alert(xhr.responseText);
 								}
-								xhr.send(JSON.stringify({comentario: +  comentario}));
+								xhr.send(JSON.stringify({comentario: comentario}));
 
 							})
 						}
