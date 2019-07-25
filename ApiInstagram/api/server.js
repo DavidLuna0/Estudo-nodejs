@@ -112,12 +112,16 @@ app.get("/api/:id", (req, res) => {
 });
 
 app.put("/api/:id", (req, res) => {
-    res.send(req.body.comentario);
-    /* db.open((err, mongoclient) => {
+    db.open((err, mongoclient) => {
         mongoclient.collection('postagens', (err, collection) => {
             collection.update(
                 { _id: objectId(req.params.id) },
-                { $set: { titulo: req.body.titulo } },
+                { $push: 
+                    {comentarios : {
+                        id_comentario : new objectId(),
+                        comentario : req.body.comentario
+                    }}
+                },
                 {},
                 (err, records) => {
                     if (err) {
@@ -129,7 +133,7 @@ app.put("/api/:id", (req, res) => {
                 }
             )
         });
-    }); */
+    });
 });
 
 app.put("/api/:id", (req, res) => {
