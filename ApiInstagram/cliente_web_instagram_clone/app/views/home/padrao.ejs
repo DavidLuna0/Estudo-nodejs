@@ -43,7 +43,13 @@
 								var id_input_comentario = 'postagem_' + id;
 								var comentario = $('#' + id_input_comentario).val();
 
-								alert(comentario);
+								var xhr = new XMLHttpRequest();
+								xhr.open('PUT', 'http://localhost:8081/api/' + id);
+								xhr.setRequestHeader('Content-type', 'application.json');
+								xhr.onload = function() {
+									alert(xhr.responseText);
+								}
+								xhr.send(JSON.stringify({comentario: +  comentario}));
 
 							})
 						}

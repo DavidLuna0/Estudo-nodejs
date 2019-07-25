@@ -10,6 +10,13 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(multiparty());
+app.use(function(req, res, next) {
+    res.setHeader("Acces-Controle-Allow-Origin", "*");
+    res.setHeader("Acces-Controle-Allow-Method", "GET, POST, PUT, DELETE");
+    res.setHeader("Acces-Controle-Allow-Headers", "content-type");
+    res.setHeader("Acces-Controle-Allow-Credentials", true);
+    next();
+})
 
 const port = 8081;
 app.listen(port);
@@ -107,7 +114,8 @@ app.get("/api/:id", (req, res) => {
 });
 
 app.put("/api/:id", (req, res) => {
-    db.open((err, mongoclient) => {
+    res.send("ROta para atualização")
+    /* db.open((err, mongoclient) => {
         mongoclient.collection('postagens', (err, collection) => {
             collection.update(
                 { _id: objectId(req.params.id) },
@@ -123,7 +131,7 @@ app.put("/api/:id", (req, res) => {
                 }
             )
         });
-    });
+    }); */
 });
 
 app.put("/api/:id", (req, res) => {
