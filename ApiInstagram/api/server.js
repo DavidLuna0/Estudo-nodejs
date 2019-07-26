@@ -158,7 +158,14 @@ app.put("/api/:id", (req, res) => {
 app.delete("/api/:id", (req, res) => {
     db.open((err, mongoclient) => {
         mongoclient.collection('postagens', (err, collection) => {
-            collection.remove({ _id : objectId(req.params.id)}, (err, records) => {
+            collection.update(
+                { },
+                { $pull: {
+                            comentarios: {id_comentario : objectId(req.params.id)}
+                        },
+                    },
+                {multi: true},
+                (err, records) => {
                 if (err) {
                     res.status.json(err)
                 } else {
