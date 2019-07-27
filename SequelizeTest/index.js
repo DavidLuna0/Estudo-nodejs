@@ -1,5 +1,5 @@
 const express = require('express');
-const { User } = require('./app/models');
+const { User, Company, Skill } = require('./app/models');
 const bodyParser = require('body-parser');
 
 const app = express();
@@ -14,24 +14,58 @@ app.get('/', (req, res) => {
 app.get('/users', async (req, res) => {
     await User.findAll().then(result => {
         res.status(200).send(result);
+    }).catch(err => {
+        res.status(400).send({error: err})
     });
 });
 
-app.post('/users', async (req, res) => {
+app.get('/companies', async (req, res) => {
+    await Company.findAll().then(result => {
+        res.send(result);
+    })
+})
+
+app.get('/companies/:id', async (req, res) => {
+    let id = req.params.id;
+    await Company.findOne({where: {id}, include: 'employes'}).then(result => {
+        res.send(result);
+    })
+})
+
+app.get('/users/skills', async (req, res) => {
+    User.findAll({
+        include: 'skills'
+    })
+})
+
+app.post('/users/:companyId', async (req, res) => {
     const {name, email, password} = req.body;
-    await User.create({name, email, password}).then(result => {
+    const companyId = req.params.companyId;
+    await User.create({name, email, password, companyId}).then(result => {
         res.status(200).send(result);
     }).catch(err => {
-        res.status(400).send(err);
+        res.status(400).send({error: err});
     });
-
 });
+
+app.post('/companies', async (req, res) => {
+    const name = req.body.name;
+    await Company.create({name}).then(result => {
+        res.status(200).send(result);
+    }).catch(err => {
+        res.status(400).send({error: err})
+    })
+})
+
+app.post('/skills', async (req, res) => {
+    
+})
 
 app.get('/users/:id',async (req, res) => {
     await User.findByPk(req.params.id).then(result => {
         res.status(200).send(result);
     }).catch(err => {
-        res.status(400).send(err);
+        res.status(400).send({error: err});
     })
 });
 
@@ -41,7 +75,7 @@ app.put('/users/:id',async (req, res) => {
     User.update({name, email, password}, {where: {id}}).then(result => {
         res.status(201).send(result);
     }).catch(err => {
-        res.send(err);
+        res.send({error: err});
     })
 });
 
@@ -52,7 +86,7 @@ app.delete('/users/:id', (req, res) => {
             res.send(result);
         });
     }).catch(err => {
-        res.send(err)
+        res.send({error: err})
     })
 });
 

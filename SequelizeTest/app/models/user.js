@@ -10,7 +10,17 @@ module.exports = (sequelize, DataTypes) => {
         },
         email: DataTypes.STRING,
         password: DataTypes.STRING,
-    });
-
+        companyId: DataTypes.INTEGER
+    }, {});
+    User.associate = (models) => {
+        User.belongsTo(models.Company, {foreignKey: 'companyId', as: 'company'})
+    };
+    User.associate = (models) => {
+        User.belongsToMany(models.Skill, {
+            through: 'UserSkill',
+            as: 'skills',
+            foreignKey: 'userId'
+        } )
+    }
     return User;
 }
