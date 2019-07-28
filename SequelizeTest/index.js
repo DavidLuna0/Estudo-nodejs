@@ -1,5 +1,5 @@
 const express = require('express');
-const { User, Company, Skill } = require('./app/models');
+const { User, Company, Skill, UserSkill } = require('./app/models');
 const bodyParser = require('body-parser');
 
 const app = express();
@@ -30,11 +30,34 @@ app.get('/companies/:id', async (req, res) => {
     await Company.findOne({where: {id}, include: 'employes'}).then(result => {
         res.send(result);
     })
-})
+});
+
 
 app.get('/users/skills', async (req, res) => {
     User.findAll({
         include: 'skills'
+    }).then(result => {
+        res.status(200).send(result);
+    }).catch(err => {
+        res.status(400).send(err);
+    })
+})
+
+app.post('/users/skills', async (req, res) => {
+    const {userId, skillId} = req.body;
+    UserSkill.create({userId, skillId}).then(result => {
+        res.status(200).send(result);
+    }).catch(err => {
+        res.status(400).send(err);
+    })
+})
+
+app.post('/skills', async (req, res) => {
+    const name = req.body.name;
+    Skill.create({name}).then(result => {
+        res.status(200).send(result);
+    }).catch(err => {
+        res.status(400).send(err);
     })
 })
 
@@ -55,10 +78,6 @@ app.post('/companies', async (req, res) => {
     }).catch(err => {
         res.status(400).send({error: err})
     })
-})
-
-app.post('/skills', async (req, res) => {
-    
 })
 
 app.get('/users/:id',async (req, res) => {
@@ -91,3 +110,4 @@ app.delete('/users/:id', (req, res) => {
 });
 
 app.listen(3000);
+console.log("Servidor escutando na porta 3000");
