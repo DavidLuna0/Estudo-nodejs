@@ -1,4 +1,4 @@
-const fatorial = require('./fatorial')
+import { fatorial } from './fatorial'
 console.log('n-fatorial');
 const argv = require('yargs').demandOption('num').argv;
 

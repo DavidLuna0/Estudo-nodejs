@@ -1,6 +1,9 @@
-const fs = require('fs');
+import * as fs from 'fs'
+/* import * as yargs from 'yargs' */
 
-const argv = require('yargs')
+const yargs = require('yargs');
+
+const argv = yargs
     .alias('f', 'filename')
     .alias('c', 'content')
     .demandOption('filename')
@@ -9,5 +12,5 @@ const argv = require('yargs')
 
 fs.writeFile(argv.filename, argv.content, (err) => {
     if(err) throw err
-    console.log(`Arquivo ${argv.filename} foi salvo com sucesso`)
+    console.log(`Arquivo ${argv.filename} foi salvo`)
 })
