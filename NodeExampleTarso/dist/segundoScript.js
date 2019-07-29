@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs = require("fs");
+/* import * as yargs from 'yargs' */
 const yargs = require('yargs');
 const argv = yargs
     .alias('f', 'filename')
@@ -13,3 +14,4 @@ fs.writeFile(argv.filename, argv.content, (err) => {
         throw err;
     console.log(`Arquivo ${argv.filename} foi salvo`);
 });
+//# sourceMappingURL=segundoScript.js.map

@@ -9,3 +9,4 @@ exports.fatorial = (num) => {
 /* module.exports = {
     fatorial
 } */ 
+//# sourceMappingURL=fatorial.js.map
