@@ -44,11 +44,12 @@ app.get('/users/skills', async (req, res) => {
 })
 
 app.post('/users/skills', async (req, res) => {
-    const {userId, skillId} = req.body;
-    UserSkill.create({userId, skillId}).then(result => {
-        res.status(200).send(result);
-    }).catch(err => {
-        res.status(400).send(err);
+    const {name, email, password, id} = req.body;
+    const companyId = 1;
+    User.create({name, email, password, companyId}).then(result => {
+        result.addSkill([id]).then(resposta => {
+            res.status(200).send(resposta);
+        })
     })
 })
 
